@@ -1,0 +1,51 @@
+---
+- name: install pip3
+  apt:
+    name: python3-pip
+    update_cache: yes
+
+- name: install pip3 packages
+  pip:
+    name: "{{ item }}"
+  loop:
+    - flask
+    - redis
+
+# create app directory
+- name:
+  file:
+    state: directory
+    path: "{{ pytime_directory }}"
+
+# create app.py        
+- name: create app.py
+  copy:
+    dest: "{{ pytime_directory }}/app.py"
+    content: |
+
+# create app.env
+- name: create app.env
+  copy:
+    dest: "{{ pytime_directory }}/app.env"   
+    content: |
+      REDIS_SERVER = {{ pytime_redis_bind }}
+  when: pytime_redis_bind is defined
+  
+# create user for app
+- name: create user
+  user:
+    name: "{{ pytime_user }}"
+    shell: /bin/false
+    system: yes
+    create_home: no
+    home: /nonexistent
+
+- name: create systemd unit
+  template:
+    src: templates/pytime.service.j2
+    dest: /etc/systemd/system/pytime.service
+  vars:
+    template_pytime_user: "{{ pytime_user }}"
+    template_pytime_directory: "{{ pytime_directory }}"
+
+...

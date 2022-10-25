@@ -1,0 +1,5 @@
+---    
+local_pytime_directory: /opt/pytime
+local_pytime_redis_bind: 127.0.0.1
+local_pytime_socket: 127.0.0.1:9090
+...

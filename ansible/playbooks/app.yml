@@ -1,0 +1,40 @@
+---
+
+- name: app play   # имя
+  hosts: all            # выполняю на всех хостах
+  gather_facts: yes     # собрать инфу по хосту
+  become: yes           # для прокатки этого плея стать root
+  
+  tasks:
+    # application
+
+    - name: include uwsgi role
+      include_role:
+        name: uwsgi
+
+    - name: include pytime role
+      include_role:
+        name: pytime
+      vars:
+        pytime_directory: "{{ local_pytime_directory }}"
+        pytime_redis_bind: "{{ local_pytime_redis_bind }}"
+
+    # pytime_directory: /opt/pytime
+    # pytime_user: pytime
+    # optional pytime_redis_bind
+
+    - name: include uwsgi (pytime) role
+      include_role:
+        name: uwsgi
+        tasks_from: pytime.yml
+      vars:
+        uwsgi_app_directory: "{{ local_pytime_directory }}"
+        uwsgi_app_socket: "{{ local_pytime_socket }}"
+
+    - name: enable systemd unit and start it
+      systemd:
+        name: pytime
+        daemon_reload: yes
+        state: started
+        enabled: yes
+...

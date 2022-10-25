@@ -1,0 +1,5 @@
+[uwsgi]
+plugin = python3
+socket = {{ template_uwsgi_app_socket }}
+mount = /=app.py
+callable = app

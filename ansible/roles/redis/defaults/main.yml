@@ -1,0 +1,5 @@
+---
+redis_config_name: default
+redis_bind: 127.0.0.1
+redis_password: redis_password
+...

@@ -1,0 +1,4 @@
+---
+- name: store value in redis
+  command: "redis-cli -a {{ redis_password }} set kek lol"
+...

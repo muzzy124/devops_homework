@@ -1,0 +1,23 @@
+---
+- name: install redis server
+  apt:
+    name: redis-server
+    # state: present пакет есть любой версии
+    # latest пакет последний - нежелательно
+    update-cache: yes # sudo apt update
+
+- name: put redis config
+  template:
+    dest: /etc/redis/redis.conf
+    src: templates/{{ redis_config_name }}-redis.conf.j2
+  vars:
+    template_redis_bind: "{{ redis_bind }}"
+    template_redis_password: "{{ redis_password }}"
+
+  notify: restart redis # если файл изменен будет вызов хэндлера нотифай
+
+- name: call notify right now # дернуть хэндлер прямо сейчас
+  meta: flush_handlers
+
+
+...

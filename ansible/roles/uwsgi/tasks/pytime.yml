@@ -1,0 +1,9 @@
+---
+# create app.ini
+- name: create app.ini
+  template:
+    src: templates/pytime.j2
+    dest: "{{ uwsgi_app_directory }}/app.ini"   
+  vars:
+    template_uwsgi_app_socket: "{{ uwsgi_app_socket }}"
+...

@@ -1,0 +1,13 @@
+[Unit]
+Description=uWSGI for pytime
+After=network.target
+
+[Service]
+User={{ template_pytime_user }}
+Group={{ template_pytime_user }}
+WorkingDirectory={{ template_pytime_directory }}
+EnvironmentFile=-{{ template_pytime_directory }}/app.env
+ExecStart=/usr/bin/uwsgi --ini app.ini
+
+[Install]
+WantedBy=multi-user.target 

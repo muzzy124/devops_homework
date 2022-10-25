@@ -1,0 +1,32 @@
+---
+- name: front play   # имя
+  hosts: front           # 
+  gather_facts: yes     # собрать инфу по хосту
+  become: yes           # для прокатки этого плея стать root
+
+  # front
+  tasks:
+    - name: install nginx
+      apt:
+        name: nginx
+    - name: replace default nginx config (не совсем правильно)
+      copy:
+        dest: /etc/nginx/sites-enabled/default
+        content: |
+          server {
+            listen 80;
+            server_name _;
+            location / {
+              include uwsgi_params;
+              uwsgi_pass uwsgi://{{ local_pytime_socket }};
+            }
+          }
+      notify: restart nginx
+
+# handlers: # запускаются в конце
+  handlers:
+    - name: restart nginx
+      systemd:
+        name: nginx
+        state: restarted
+...

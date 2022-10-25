@@ -1,0 +1,10 @@
+# ignore vkcs_provider.tf
+vkcs_provider.tf
+
+# ignore terraform files
+.terraform.lock.hcl
+.terraform/providers/*
+
+openrc.sh
+
+terraform.tfstate.backup*

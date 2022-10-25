@@ -1,0 +1,14 @@
+# myserver.mydomain.tld
+
+[db]
+vm ansible_host=5.188.142.64 ansible_user=ubuntu
+
+[app]
+vm ansible_host=5.188.142.64 ansible_user=ubuntu
+
+[front]
+vm ansible_host=5.188.142.64 ansible_user=ubuntu
+
+[all:vars]
+ansible_ssh_extra_args="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+ansible_python_interpreter=/usr/bin/python3
